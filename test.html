@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table with Hover Icons and Editable Cells</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .icon-overlay {
+            position: relative;
+        }
+        .icon {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            opacity: 0.7; /* Adjust opacity for transparency */
+            display: none; /* Hide icons by default */
+        }
+        .icon-overlay:hover .icon {
+            display: block; /* Show icons on hover */
+        }
+        .resizable {
+            overflow: auto;
+            resize: both;
+        }
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        .selected {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+<div class="relative overflow-x-auto p-4">
+    <!-- Buttons to enable contenteditable and merge cells -->
+    <button id="edit-button" class="absolute top-2 right-2 bg-blue-500 text-white px-4 py-2 rounded">Edit</button>
+    <button id="merge-button" class="absolute top-2 right-20 bg-green-500 text-white px-4 py-2 rounded">Merge</button>
+    <button id="add-row-button" class="absolute top-2 right-40 bg-green-500 text-white px-4 py-2 rounded">Add Row</button>
+
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 resizable">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3 rounded-s-lg">Column 1</th>
+                <th scope="col" class="px-6 py-3">Column 2</th>
+                <th scope="col" class="px-6 py-3">Column 3</th>
+                <th scope="col" class="px-6 py-3 rounded-e-lg">Column 4</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            <tr class="bg-white dark:bg-gray-800">
+                <td class="px-6 py-4 icon-overlay resizable">
+                    Cell 1
+                    <img src="icon1.png" class="icon top-2 left-2" alt="icon">
+                    <img src="icon2.png" class="icon top-2 right-2" alt="icon">
+                    <img src="icon3.png" class="icon bottom-2 left-2 split-icon" alt="icon" onclick="splitCell(this)">
+                    <img src="icon4.png" class="icon bottom-2 right-2" alt="icon">
+                </td>
+                <td class="px-6 py-4 icon-overlay resizable">
+                    Cell 2
+                    <img src="icon1.png" class="icon top-2 left-2" alt="icon">
+                    <img src="icon2.png" class="icon top-2 right-2" alt="icon">
+                    <img src="icon3.png" class="icon bottom-2 left-2 split-icon" alt="icon" onclick="splitCell(this)">
+                    <img src="icon4.png" class="icon bottom-2 right-2" alt="icon">
+                </td>
+                <td class="px-6 py-4 icon-overlay resizable">
+                    Cell 3
+                    <img src="icon1.png" class="icon top-2 left-2" alt="icon">
+                    <img src="icon2.png" class="icon top-2 right-2" alt="icon">
+                    <img src="icon3.png" class="icon bottom-2 left-2 split-icon" alt="icon" onclick="splitCell(this)">
+                    <img src="icon4.png" class="icon bottom-2 right-2" alt="icon">
+                </td>
+                <td class="px-6 py-4 icon-overlay resizable">
+                    Cell 4
+                    <img src="icon1.png" class="icon top-2 left-2" alt="icon">
+                    <img src="icon2.png" class="icon top-2 right-2" alt="icon">
+                    <img src="icon3.png" class="icon bottom-2 left-2 split-icon" alt="icon" onclick="splitCell(this)">
+                    <img src="icon4.png" class="icon bottom-2 right-2" alt="icon">
+                </td>
+            </tr>
+            <tr class="bg-white dark:bg-gray-800">
+                <td class="px-6 py-4 icon-overlay resizable">
+                    Cell 5
+                    <img src="icon1.png" class="icon top-2 left-2" alt="icon">
+                    <img src="icon2.png" class="icon top-2 right-2" alt="icon">
+                    <img src="icon3.png" class="icon bottom-2 left-2 split-icon" alt="icon" onclick="splitCell(this)">
+                    <img src="icon4.png" class="icon bottom-2 right-2" alt="icon">
+                </td>
+                <td class="px-6 py-4 icon-overlay resizable">
+                    Cell 6
+                    <img src="icon1.png" class="icon top-2 left-2" alt="icon">
+                    <img src="icon2.png" class="icon top-2 right-2" alt="icon">
+                    <img src="icon3.png" class="icon bottom-2 left-2 split-icon" alt="icon" onclick="splitCell(this)">
+                    <img src="icon4.png" class="icon bottom-2 right-2" alt="icon">
+                </td>
+                <td class="px-6 py-4 icon-overlay resizable">
+                    Cell 7
+                    <img src="icon1.png" class="icon top-2 left-2" alt="icon">
+                    <img src="icon2.png" class="icon top-2 right-2" alt="icon">
+                    <img src="icon3.png" class="icon bottom-2 left-2 split-icon" alt="icon" onclick="splitCell(this)">
+                    <img src="icon4.png" class="icon bottom-2 right-2" alt="icon">
+                </td>
+                <td class="px-6 py-4 icon-overlay resizable">
+                    Cell 8
+                    <img src="icon1.png" class="icon top-2 left-2" alt="icon">
+                    <img src="icon2.png" class="icon top-2 right-2" alt="icon">
+                    <img src="icon3.png" class="icon bottom-2 left-2 split-icon" alt="icon" onclick="splitCell(this)">
+                    <img src="icon4.png" class="icon bottom-2 right-2" alt="icon">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.getElementById('edit-button').addEventListener('click', () => {
+        const cells = document.querySelectorAll('td.icon-overlay');
+        cells.forEach(cell => {
+            cell.setAttribute('contenteditable', 'true');
+            cell.addEventListener('blur', () => {
+                cell.removeAttribute('contenteditable');
+            });
+        });
+    });
+
+    document.getElementById('add-row-button').addEventListener('click', () => {
+        const tableBody = document.getElementById('table-body');
+        const newRow = document.createElement('tr');
+        newRow.classList.add('bg-white', 'dark:bg-gray-800');
+
+        for (let i = 0; i < 4; i++) {
+            const newCell = document.createElement('td');
+            newCell.classList.add('px-6', 'py-4', 'icon-overlay', 'resizable');
+            newCell.innerHTML = `New Cell
+                <img src="icon1.png" class="icon top-2 left-2" alt="icon">
+                <img src="icon2.png" class="icon top-2 right-2" alt="icon">
+                <img src="icon3.png" class="icon bottom-2 left-2 split-icon" alt="icon" onclick="splitCell(this)">
+                <img src="icon4.png" class="icon bottom-2 right-2" alt="icon">`;
+            newRow.appendChild(newCell);
+        }
+
+        tableBody.appendChild(newRow);
+    });
+
+    function splitCell(icon) {
+        const cell = icon.closest('td');
+        const newContent = `
+            <div contenteditable="true" class="w-full border-b">New Cell Top</div>
+            <div contenteditable="true" class="w-full">New Cell Bottom</div>
+        `;
+        cell.innerHTML = newContent + cell.innerHTML;
+    }
+
+    let mergeMode = false;
+    let selectedCells = [];
+
+    document.getElementById('merge-button').addEventListener('click', () => {
+        mergeMode = !mergeMode;
+        if (mergeMode) {
+            document.getElementById('merge-button').classList.add('bg-red-500');
+            document.getElementById('merge-button').innerText = 'Merge Mode: ON';
+        } else {
+            document.getElementById('merge-button').classList.remove('bg-red-500');
+            document.getElementById('merge-button').innerText = 'Merge';
+            mergeCells();
+        }
+    });
+
+    document.querySelectorAll('td.icon-overlay').forEach(cell => {
+        cell.addEventListener('click', () => {
+            if (mergeMode) {
+                cell.classList.toggle('selected');
+                if (cell.classList.contains('selected')) {
+                    selectedCells.push(cell);
+                } else {
+                    selectedCells = selectedCells.filter(selected => selected !== cell);
+                }
+            }
+        });
+    });
+
+    function mergeCells() {
+        if (selectedCells.length < 2) {
+            alert('Select at least two cells to merge.');
+            return;
+        }
+
+        // Get the minimum and maximum row and column indices of the selected cells
+        const rowIndices = selectedCells.map(cell => cell.parentElement.rowIndex);
+        const colIndices = selectedCells.map(cell => cell.cellIndex);
+
+        const minRow = Math.min(...rowIndices);
+        const maxRow = Math.max(...rowIndices);
+        const minCol = Math.min(...colIndices);
+        const maxCol = Math.max(...colIndices);
+
+        const firstCell = selectedCells.find(cell => cell.parentElement.rowIndex === minRow && cell.cellIndex === minCol);
+        const rowSpan = maxRow - minRow + 1;
+        const colSpan = maxCol - minCol + 1;
+
+        selectedCells.forEach(cell => {
+            if (cell !== firstCell) {
+                cell.style.display = 'none';
+            }
+        });
+
+        firstCell.rowSpan = rowSpan;
+        firstCell.colSpan = colSpan;
+        firstCell.classList.remove('selected');
+        selectedCells = [];
+    }
+</script>
+</body>
+</html>
